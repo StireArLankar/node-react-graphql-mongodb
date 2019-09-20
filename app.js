@@ -1,10 +1,12 @@
 const express = require('express')
 const graphqlHTTP = require('express-graphql')
 const { buildSchema } = require('graphql')
+const mongoose = require('mongoose')
+require('dotenv').config()
+
+const Event = require('./models/event')
 
 const app = express()
-
-const events = [];
 
 app.use(express.json())
 app.use('/graphql', graphqlHTTP({
@@ -38,18 +40,25 @@ app.use('/graphql', graphqlHTTP({
   `),
   rootValue: {
     events: () => {
-      return events
+      return Event.find()
+        .then((events) => events.map(event => ({...event._doc})))
     },
     createEvent: (args) => {
-      const event = {
-        _id: Math.random().toString(),
+      const event = new Event({
         title: args.eventInput.title,
         description: args.eventInput.description,
-        price: Number(args.eventInput.description),
-        date: new Date().toISOString()
-      }
-      events.push(event)
+        price: Number(args.eventInput.price),
+        date: Date.now()
+      })
       return event
+        .save()
+        .then((result) => {
+          return {...result._doc}
+        })
+        .catch((err) => {
+          console.log(err)
+          throw err
+        })
     }
   },
   graphiql: true
@@ -59,7 +68,15 @@ app.get('/', (req, res) => {
   res.send('Hello World')
 })
 
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT || 4000
+
+mongoose
+  .connect(process.env.MDB, {
+    useUnifiedTopology: true,
+    useNewUrlParser: true,
+  })
+  .then(() => console.log('DB Connected!'))
+  .catch(err => console.log(`DB Connection Error: ${err.message}`))
 
 app.listen(PORT, () => {
   console.log(`Server is running on ${PORT} port`)
