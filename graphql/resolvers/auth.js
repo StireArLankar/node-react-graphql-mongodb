@@ -5,8 +5,6 @@ const User = require('../../models/user')
 module.exports = {
   login: async (args) => {
     const { email, password } = args
-    console.log(email, password)
-    console.log(args)
     const user = await User.findOne({ email: email })
 
     if (!user) throw new Error('User does not exist')
