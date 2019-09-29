@@ -1,4 +1,4 @@
-import React, { useContext, Fragment } from 'react'
+import React, { useContext } from 'react'
 import { NavLink } from 'react-router-dom'
 import classes from './header.module.css'
 import AuthContext from '../../context/auth.context'
@@ -30,6 +30,14 @@ const Header = () => {
     </li>
   )
 
+  const renderLogoutButton = () => (
+    <li className={classes.item} key='logout'>
+      <button onClick={authCtx.logout} className={classes.link}>
+        Logout
+      </button>
+    </li>
+  )
+
   return (
     <header className={classes.wrapper}>
       <div>
@@ -40,6 +48,7 @@ const Header = () => {
           {!authCtx.token && renderAuthLink()}
           {renderEventsLink()}
           {authCtx.token && renderBookingsLink()}
+          {authCtx.token && renderLogoutButton()}
         </ul>
       </nav>
     </header>
