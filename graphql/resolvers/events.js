@@ -5,16 +5,18 @@ const User = require('../../models/user')
 
 module.exports = {
   events: () => {
-    return Event.find()
-      .then((events) => events.map(Adapter.event))
+    return Event.find().then((events) => events.map(Adapter.event))
   },
-  createEvent: async (args) => {
+  createEvent: async (args, req) => {
+    if (!req.isAuth) {
+      throw new Error('Unauthenticated')
+    }
     const event = await new Event({
       title: args.eventInput.title,
       description: args.eventInput.description,
       price: Number(args.eventInput.price),
       date: Date.now(),
-      createdBy: '5d84eb6f96dda32e70aae12a'
+      createdBy: req.userId
     }).save()
 
     const createdEvent = Adapter.event(event)

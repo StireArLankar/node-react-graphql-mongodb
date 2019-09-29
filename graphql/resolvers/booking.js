@@ -4,23 +4,25 @@ const Event = require('../../models/event')
 const Booking = require('../../models/booking')
 
 module.exports = {
-  bookings: () => {
-    return Booking.find()
-      .then((bookings) => bookings.map(Adapter.booking))
+  bookings: (args, req) => {
+    if (!req.isAuth) throw new Error('Unauthenticated')
+    return Booking.find().then((bookings) => bookings.map(Adapter.booking))
   },
-  bookEvent: async (args) => {
+  bookEvent: async (args, req) => {
+    if (!req.isAuth) throw new Error('Unauthenticated')
     const event = await Event.findById(args.eventID)
     const booking = new Booking({
-      user: '5d84eb6f96dda32e70aae12a',
+      user: req.userId,
       event: event
     })
     const result = await booking.save()
     return Adapter.booking(result)
   },
-  cancelBooking: async (args) => {
+  cancelBooking: async (args, req) => {
+    if (!req.isAuth) throw new Error('Unauthenticated')
     const booking = await Booking.findById(args.bookingID).populate('event')
     const event = Adapter.event(booking.event)
-    await Booking.deleteOne({_id: args.bookingID})
+    await Booking.deleteOne({ _id: args.bookingID })
     return event
   }
 }
