@@ -1,6 +1,6 @@
 # GraphQL + React Event Booking API
 
-Following [https://www.youtube.com/channel/UCSJbGtTlrDami-tDGPUV9-w](Academind series)
+Following [Academind](https://www.youtube.com/channel/UCSJbGtTlrDami-tDGPUV9-w) series
 
 Simple NodeJS + GraphQL + React + MongoDB application
 
