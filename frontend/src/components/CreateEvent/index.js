@@ -51,7 +51,7 @@ const CreateEvent = (props) => {
       body: JSON.stringify(requestBody),
       headers: {
         'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + token
+        'Authorization': 'Bearer ' + token
       }
     })
       .then((res) => {

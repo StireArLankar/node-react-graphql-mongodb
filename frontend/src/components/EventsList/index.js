@@ -1,13 +1,20 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import classes from './events.module.css'
+import EventItem from './EventItem'
+import AuthContext from '../../context/auth.context'
 
 const EventsList = (props) => {
+  const authCtx = useContext(AuthContext)
+
   const renderList = () => {
     return props.events.map((event) => {
       return (
-        <li key={event._id} className={classes.item}>
-          {event.title}
-        </li>
+        <EventItem
+          key={event._id}
+          {...event}
+          userId={authCtx.userId}
+          onClick={props.onItemClick}
+        />
       )
     })
   }

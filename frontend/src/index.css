@@ -9,6 +9,7 @@ body {
   --color-main-active: #6219d6;
   --color-logo: #dfcefc;
   --color-text-primary: #ffffff;
+  --color-text-secondary: #7c7c7c;
 }
 
 * {
