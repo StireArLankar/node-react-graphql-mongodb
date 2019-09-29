@@ -27,8 +27,27 @@ body {
   cursor: pointer;
 }
 
+.button:last-child {
+  margin-right: 0;
+}
+
 .button:hover,
 .button:active {
   background-color: var(--color-main-active);
   border-color: var(--color-main-active);
+}
+
+.form-control {
+  margin-bottom: 1rem;
+}
+
+.form-controllabel {
+  margin-bottom: 0.5rem;
+}
+
+.form-control label,
+.form-control input,
+.form-control textarea {
+  width: 100%;
+  display: block;
 }

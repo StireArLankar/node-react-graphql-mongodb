@@ -38,7 +38,7 @@
 }
 
 @media (min-width: 768px) {
-  .modal {
+  .wrapper {
     width: 30rem;
     left: calc((100% - 30rem) / 2);
   }
