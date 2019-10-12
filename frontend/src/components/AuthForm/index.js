@@ -9,26 +9,34 @@ const initialState = {
 
 const getSignUpBody = ({ email, password }) => ({
   query: `
-    mutation {
-      createUser(userInput: {email: "${email}", password: "${password}"}) {
+    mutation CreateUser($email: String!, $password: String!) {
+      createUser(userInput: {email: $email, password: $password}) {
         _id
         email
         password
       }
     }
-  `
+  `,
+  variables: {
+    email,
+    password
+  }
 })
 
 const getLoginBody = ({ email, password }) => ({
   query: `
-    query {
-      login(email: "${email}", password: "${password}") {
+    query Login ($email: String!, $password: String!) {
+      login(email: $email, password: $password) {
         _id
         token
         tokenExpiration
       }
     }
-  `
+  `,
+  variables: {
+    email,
+    password
+  }
 })
 
 const AuthForm = () => {

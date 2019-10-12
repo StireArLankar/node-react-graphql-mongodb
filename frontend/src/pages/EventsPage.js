@@ -60,14 +60,17 @@ const EventsPage = () => {
   const onBookEvent = () => {
     const requestBody = {
       query: `
-          mutation {
-            bookEvent(eventID: "${selectedEvent}") {
-              _id
-             createdAt
-             updatedAt
-            }
+        mutation BookEvent($selectedEvent: ID!){
+          bookEvent(eventID: $selectedEvent) {
+            _id
+            createdAt
+            updatedAt
           }
-        `
+        }
+      `,
+      variables: {
+        selectedEvent
+      }
     }
 
     fetch('http://localhost:3001/graphql', {

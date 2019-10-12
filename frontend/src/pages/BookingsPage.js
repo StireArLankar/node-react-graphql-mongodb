@@ -17,12 +17,12 @@ const BookingsPage = () => {
           query {
             bookings {
               _id
-             createdAt
-             event {
-               _id
-               title
-               date
-             }
+              createdAt
+              event {
+                _id
+                title
+                date
+              }
             }
           }
         `
@@ -57,13 +57,16 @@ const BookingsPage = () => {
 
     const requestBody = {
       query: `
-          mutation {
-            cancelBooking(bookingID: "${bookingId}"){
+          mutation CancelBooking ($id: ID!) {
+            cancelBooking(bookingID: $id){
               _id
               title
             }
           }
-        `
+        `,
+      variables: {
+        id: bookingId
+      }
     }
 
     fetch('http://localhost:3001/graphql', {

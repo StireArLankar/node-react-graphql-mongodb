@@ -32,16 +32,21 @@ const CreateEvent = (props) => {
 
     const requestBody = {
       query: `
-          mutation {
-            createEvent(eventInput: {title: "${title}", description: "${description}", price: ${price}}) {
-              _id
-              title
-              description
-              date
-              price
-            }
+        mutation CreateEvent($title: String!, $description: String!, $price: Float!) {
+          createEvent(eventInput: {title: $title, description: $description, price: $price}) {
+            _id
+            title
+            description
+            date
+            price
           }
-        `
+        }
+      `,
+      variables: {
+        title,
+        description,
+        price
+      }
     }
 
     const token = authCtx.token
@@ -51,7 +56,7 @@ const CreateEvent = (props) => {
       body: JSON.stringify(requestBody),
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + token
+        Authorization: 'Bearer ' + token
       }
     })
       .then((res) => {
