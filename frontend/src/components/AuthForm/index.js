@@ -72,7 +72,6 @@ const AuthForm = () => {
           const { token, _id: userId } = body.data.login
           authCtx.login({ token, userId })
         }
-        console.log(body)
       })
       .catch((err) => console.log(err))
 

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react'
 import AuthContext from '../context/auth.context'
 import Spinner from '../components/Spinner'
+import BookignsList from '../components/BookingsList'
 
 const BookingsPage = () => {
   const [isLoading, setIsLoading] = useState(true)
@@ -51,15 +52,45 @@ const BookingsPage = () => {
     [authCtx.token]
   )
 
+  const onBookingDelete = (bookingId) => {
+    setIsLoading(true)
+
+    const requestBody = {
+      query: `
+          mutation {
+            cancelBooking(bookingID: "${bookingId}"){
+              _id
+              title
+            }
+          }
+        `
+    }
+
+    fetch('http://localhost:3001/graphql', {
+      method: 'POST',
+      body: JSON.stringify(requestBody),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + authCtx.token
+      }
+    })
+      .then((res) => {
+        if (res.status !== 200 && res.status !== 201) {
+          throw new Error('Failed!')
+        }
+        return res.json()
+      })
+      .then(() =>
+        setBookings((bookings) =>
+          bookings.filter((booking) => booking._id !== bookingId)
+        )
+      )
+      .catch((err) => console.log(err))
+      .then(() => setIsLoading(false))
+  }
+
   const renderBookings = () => (
-    <ul>
-      {bookings.map((booking) => (
-        <li key={booking._id}>
-          {booking.event.title} -{' '}
-          {new Date(booking.createdAt).toLocaleDateString()}
-        </li>
-      ))}
-    </ul>
+    <BookignsList bookings={bookings} onDelete={onBookingDelete} />
   )
 
   return (

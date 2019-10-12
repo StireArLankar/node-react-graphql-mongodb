@@ -51,9 +51,7 @@ const EventsPage = () => {
           const events = resData.data.events
           setEvents(events)
         })
-        .catch((err) => {
-          console.log(err)
-        })
+        .catch((err) => console.log(err))
         .then(() => setIsLoading(false))
     },
     [count]
@@ -82,17 +80,12 @@ const EventsPage = () => {
     })
       .then((res) => {
         if (res.status !== 200 && res.status !== 201) {
-          console.log(res.json())
           throw new Error('Failed!')
         }
         return res.json()
       })
-      .then((resData) => {
-        setSelectedEvent(null)
-      })
-      .catch((err) => {
-        console.log(err)
-      })
+      .then(() => setSelectedEvent(null))
+      .catch((err) => console.log(err))
   }
 
   const onEventCreation = () => setCount((state) => state + 1)
